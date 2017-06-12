@@ -1,5 +1,5 @@
 # HA-GarageDoor
-My home automation garage door demo for the Wemos D1 mini Lite, ESP82685 chip
+My home automation garage door demo for the Wemos D1 mini Lite, ESP8285 chip
 
 Project uses MQTT control
 Built in webserver for basic status - (control not yet implemented)
