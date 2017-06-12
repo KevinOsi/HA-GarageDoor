@@ -6,22 +6,23 @@
 #include <Wire.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
+#include "webservdata.h" //stores the generic junk for the webserver
 #include "default.h" //setup your defaults for local servers
 
 
 // WIFI parameters
-const char* SSID = MY_WIFI_SSID;  // your wifi SSID
-const char* PASSWORD = MY_WIFI_PASSWORD; //your WIFI password
+const char* SSID = MY_WIFI_SSID;  // Use your wifi SSID
+const char* PASSWORD = MY_WIFI_PASSWORD; // Use your WIFI password
 String NodeRedAlive = "CONNECTED";
 String MyIP = "";
 
 //NPT config
 WiFiUDP ntpUDP;
-NTPClient TimeClient(ntpUDP, "ca.pool.ntp.org", -21600 , 60000); // use canadian pool and set offset for local -6 hours
+NTPClient TimeClient(ntpUDP, "ca.pool.ntp.org", -21600 , 60000); // uses canadian pool and set offset for local -6 hours
 
 
 // MQTT Config
-const char* BROKER_MQTT = MY_BROKER_MQTT_IP;
+const char* BROKER_MQTT = MY_BROKER_MQTT_IP;  //setup your MQTT server settings
 int BROKER_PORT = MY_BROKER_PORT;
 const char* MQTT_USER = MY_MQTT_USER;
 const char* MQTT_PASS = MY_MQTT_PASS;
@@ -34,7 +35,7 @@ String MQTTConnected = "";
 
 //Setup
 String DeviceID = "ESP Garage"; //set unique device name for each device
-String SystemID = "Sensor-Ctrl Garage";
+String SystemID = "Sensor-Ctrl Garage"; //Family of devices for MQTT
 
 //pin config
 int OpenPin = 16;  //D0 Pin send open cmmd
@@ -43,12 +44,12 @@ int DoorOpenStatePin = 12; //D6 Pin get open contact state
 int DoorCloseStatePin = 13;	//D7 Pin  gets close contact state
 
 //MQTT topics
-String TopicDeviceAll = "Home/Garage/1/Relays";  //sub comands to device
+String TopicDeviceAll = "Home/Garage/1/Relays";  //sub commands to device
 String TopicStatusNR = "Home/Status/WatchDog/1";  //node red health
 
 String TopicStatusAll = "Home/Garage/1/Status"; //pub  device feedback on current state
 String TopicStatusHVAC = "Home/HVAC/1/Sensors/1/Garage/1/Status";  //pub temperature
-String TopicStatusDevice = "Home/Garage/1/Status/WatchDog"; //watchdog feedback
+String TopicStatusDevice = "Home/Garage/1/Status/WatchDog"; //watch dog feedback
 
 
 //Web server
@@ -60,7 +61,11 @@ String myPage = "";
 double WDTimer = 0;
 double TMPTimer = 0;
 
-//Classes
+
+/*
+ * Classes
+ */
+
 class DoorControl{
 	public:
 		int DoorState;  //door's current state (0 closed, 1 Open, 2 in travel)
@@ -279,12 +284,12 @@ bool TempSens::GetData(){
 	return 1;
 }
 
-
 //setup sensors
 TempSens mySensors;
 
 
-
+/*
+*/
 // functions and stuff
  void initPins() {
 
@@ -421,109 +426,7 @@ void recconectWiFi() {
 	}
 }
 
-const char Header[] =
-"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
-"<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css\">"
-"<link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">"
-"<nav><div class=\"nav-wrapper teal\">"
-"<a href=\"\" class=\"brand-logo\">Irrigation System</a>"
-"<ul id=\"nav-mobile\" class=\"right hide-on-med-and-down\"></ul>"
-"</div></nav>"
-"<div class=\"card teal lighten-2\">"
-"<div class=\"card-content\">"
-"<span class=\"card-title\">System Info:</span>"
-"<p>Current System Information</p>"
-"</div>"
-"<ul class=\"collection\">"
-"<li class=\"collection-item avatar\">"
-"<i class=\"material-icons circle blue\">import_export</i>"
-"<a class=\"collection-item\"><span class=\"badge\">"
-;
-
-const char Header2[] =
-"</span>MQTT</a>"
-"</li>"
-"<li class=\"collection-item avatar\">"
-"<i class=\"material-icons circle blue\">developer_board</i>"
-"<a href=\"http://"
-;
-
-
-const char Header21[] =
-":1880\" class=\"collection-item\"><span class=\"badge\">"
-;
-
-
-const char Header3[] =
-"</span>NodeRed</a>"
-"</li>"
-"<li class=\"collection-item avatar\">"
-"<i class=\"material-icons circle blue\">blur_on</i>"
-"<a class=\"collection-item\"><span class=\"badge\">"
-"<a class=\"collection-item\">System Status</a>"
-"<table class=\"striped\">"
-"<tbody>"
-"<tr><td>Current Temp</td><td>"
-;
-
-const char Header4[] =
-"</td></tr>"
-"<tr><td>Current Humidity</td><td>"
-;
-
-const char Body1[] =
-"</td></tr>"
-"</tbody>"
-"</table>"
-"</li>"
-"</ul>"
-"</div>"
-"<div class=\"card teal lighten-2\">"
-"<div class=\"card-content\">"
-"<span class=\"card-title\">MQTT Topics</span>"
-"<p>Current Topics being subscribed and published to</p>"
-"</div>"
-"<ul class=\"collection\">"
-"<li class=\"collection-item avatar\">"
-"<i class=\"material-icons circle blue\">file_download</i>"
-"<table class=\"striped\">"
-"<thead>"
-"<tr><th>Subscriptions</th></tr>"
-"</thead>"
-"<tbody>"
-"<tr><td>"
-;
-
-const char Table1[] =
-"</td></tr>"
-"<tr><td>"
-;
-
-const char Body2[] =
-"</td></tr>"
-"</tbody>"
-"</table>"
-"</li>"
-"<li class=\"collection-item avatar\">"
-"<i class=\"material-icons circle blue\">file_upload</i>"
-"<table class=\"striped\">"
-"<thead>"
-"<tr><th>Publications</th></tr>"
-"</thead>"
-"<tbody>"
-"<tr><td>"
-;
-
-const char Body3[] =
-"</td></tr>"
-"</tbody>"
-"</table>"
-"</li>"
-"</ul>"
-"</div>"
-;
-
-
+//Webserver handler and builder
 void BuildPage()
 {
 	myPage = "";
@@ -579,34 +482,8 @@ void handleSubmit(){
 
 }
 
-void setup() {
-
-
-
-  initPins();
-  initSerial();
-
-  initWiFi();
-  initMQTT();
-
-  // start webserver!
-  startWebserver();
-
-  //gpio 5 and 4 ???
-  //const int sclPin = 5;
-  //const int sdaPin = 4;
-  //Wire.begin(sdaPin, sclPin);
-
-  TimeClient.begin();
-  TimeClient.update();
-  Serial.println("Starup time - Epoch time " + String(TimeClient.getEpochTime()) + " - Formated time - Day" + TimeClient.getDay() + " - " + TimeClient.getFormattedTime());
-
-  WDTimer = millis();
-  TMPTimer = millis();
-
-}
-
 void WatchDogTimer() {
+// creates a stay alive message with time stamp every 20 seconds back to listeners
 
 	String BufferTxt = "{\"Device\" : \"" + DeviceID
 			+ "\" , \"Status\" : \"Alive\" ,  \"TimeStamp\" : "
@@ -623,6 +500,32 @@ void WatchDogTimer() {
 
 }
 
+
+//Setup and main loop
+void setup() {
+
+
+  //run init functions
+  initPins();
+  initSerial();
+  initWiFi();
+  initMQTT();
+
+  // start webserver!
+  startWebserver();
+
+  // Start time client
+  TimeClient.begin();
+  TimeClient.update();
+  Serial.println("Startup time - Epoch time " + String(TimeClient.getEpochTime()) + " - Formated time - Day" + TimeClient.getDay() + " - " + TimeClient.getFormattedTime());
+
+
+  // setup timers
+  WDTimer = millis(); //read cycle timer
+  TMPTimer = millis(); //watch  dog cycle timer
+
+}
+
 void loop() {
 
 
@@ -636,9 +539,7 @@ void loop() {
 	MQTT.loop();
 
 
-	//check if time stamp is active on first in queue, else empty
-
-
+	//Read Cycle
 	if(millis() > (TMPTimer + 5000)){
 
 
@@ -654,7 +555,7 @@ void loop() {
 
 
 
-	//send out watchdog timer update every 20 seconds
+	//send out watch dog timer update every 20 seconds
 	if(millis() > (WDTimer + 20000)){
 
 		WDTimer = millis();
