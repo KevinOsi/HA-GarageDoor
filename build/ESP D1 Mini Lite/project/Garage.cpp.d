@@ -134,4 +134,4 @@ project/Garage.cpp.o: ../../Garage.cpp \
  C:/Users/Kevin/.arduinocdt/packages/esp8266/hardware/esp8266/2.3.0/cores/esp8266/Udp.h \
  C:/Users/Kevin/.arduinocdt/packages/esp8266/hardware/esp8266/2.3.0/libraries/ESP8266WiFi/src/WiFiUdp.h \
  C:/Users/Kevin/.arduinocdt/packages/esp8266/hardware/esp8266/2.3.0/libraries/ESP8266WiFi/src/include/slist.h \
- ../../default.h
+ ../../webservdata.h ../../default.h
