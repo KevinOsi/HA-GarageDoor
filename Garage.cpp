@@ -278,9 +278,6 @@ bool TempSens::GetData(){
 
 
 
-
-
-
 	return 1;
 }
 
@@ -309,6 +306,7 @@ void initSerial() {
 
 //setup wifi connection
 void initWiFi() {
+
 	delay(10);
 	Serial.println();
 	Serial.print("Connecting: ");
@@ -322,10 +320,15 @@ void initWiFi() {
 
 	Serial.println("");
 	Serial.print(SSID);
-	Serial.println(" | IP ");
-	Serial.println(WiFi.localIP());
+	Serial.print(" | IP | ");
+	Serial.print(WiFi.localIP());
+	Serial.print(" | MAC ");
+	Serial.println(WiFi.macAddress());
 
-	 MyIP = String(WiFi.localIP()[0]) + "." + String(WiFi.localIP()[1]) + "." + String(WiFi.localIP()[2]) + "." + String(WiFi.localIP()[3]);
+
+	MyIP = String(WiFi.localIP()[0]) + "." + String(WiFi.localIP()[1]) + "." + String(WiFi.localIP()[2]) + "." + String(WiFi.localIP()[3]);
+
+
 }
 
 // Receive messages
