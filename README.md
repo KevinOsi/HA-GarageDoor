@@ -31,4 +31,4 @@ Lockout:
 typical return values
 
 	MSG - { Device: "ESP Garage", System: "Sensor-Ctrl Garage", Temperature: 33.88, Humidity: 31.14 }
-	MSG - { Device: "ESP Garage", Status: "Closed", Lockout: 1 }
+	MSG - { Device: "ESP Garage", Status: "Closed", Lockout: "on" }

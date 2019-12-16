@@ -15,7 +15,7 @@ const char Header[] =
 "<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css\">"
 "<link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">"
 "<nav><div class=\"nav-wrapper teal\">"
-"<a href=\"\" class=\"brand-logo\">Irrigation System</a>"
+"<a href=\"\" class=\"brand-logo\">Garage Door Monitor</a>"
 "<ul id=\"nav-mobile\" class=\"right hide-on-med-and-down\"></ul>"
 "</div></nav>"
 "<div class=\"card teal lighten-2\">"
@@ -59,6 +59,20 @@ const char Header4[] =
 "</td></tr>"
 "<tr><td>Current Humidity</td><td>"
 ;
+
+const char Header5[] =
+"</td></tr>"
+"<tr><td>Door Status</td><td>"
+;
+
+const char Header6[] =
+"</td></tr>"
+"<tr><td>Lock Out Status</td><td>"
+;
+
+
+
+
 
 const char Body1[] =
 "</td></tr>"
@@ -111,16 +125,6 @@ const char Body3[] =
 "</ul>"
 "</div>"
 ;
-
-
-
-
-
-
-
-
-
-
 
 
 
